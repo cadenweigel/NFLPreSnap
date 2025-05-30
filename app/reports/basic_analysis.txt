@@ -1,0 +1,339 @@
+
+--- Dataset Overview ---
+
+Games:
+Shape: (136, 9)
+                   count unique        top freq               mean          std           min            25%           50%            75%           max
+gameId             136.0    NaN        NaN  NaN  2022098922.117647  5996.613763  2022090800.0  2022092500.75  2022100902.5  2022102306.25  2022110700.0
+season             136.0    NaN        NaN  NaN             2022.0          0.0        2022.0         2022.0        2022.0         2022.0        2022.0
+week               136.0    NaN        NaN  NaN           4.845588     2.567254           1.0            3.0           5.0            7.0           9.0
+gameDate             136     27  9/11/2022   14                NaN          NaN           NaN            NaN           NaN            NaN           NaN
+gameTimeEastern      136      8   13:00:00   73                NaN          NaN           NaN            NaN           NaN            NaN           NaN
+homeTeamAbbr         136     32         NO    6                NaN          NaN           NaN            NaN           NaN            NaN           NaN
+visitorTeamAbbr      136     32        BUF    5                NaN          NaN           NaN            NaN           NaN            NaN           NaN
+homeFinalScore     136.0    NaN        NaN  NaN          22.669118     8.659874           3.0           17.0          22.5           27.0          49.0
+visitorFinalScore  136.0    NaN        NaN  NaN          20.948529     9.731446           0.0          14.75          20.0           27.0          48.0
+gameId               0
+season               0
+week                 0
+gameDate             0
+gameTimeEastern      0
+homeTeamAbbr         0
+visitorTeamAbbr      0
+homeFinalScore       0
+visitorFinalScore    0
+
+Plays:
+Shape: (16124, 50)
+                                    count unique                                                     top   freq               mean          std           min           25%           50%           75%           max
+gameId                            16124.0    NaN                                                     NaN    NaN  2022098903.691206  5979.251755  2022090800.0  2022092501.0  2022100903.0  2022102307.0  2022110700.0
+playId                            16124.0    NaN                                                     NaN    NaN        2023.830563  1182.090771          54.0         996.0        2017.0        3022.0        5120.0
+playDescription                     16124  16122  (7:39) (Shotgun) P.Mahomes pass incomplete short left.      2                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+quarter                           16124.0    NaN                                                     NaN    NaN           2.572253     1.135404           1.0           2.0           3.0           4.0           5.0
+down                              16124.0    NaN                                                     NaN    NaN           1.800794     0.827194           1.0           1.0           2.0           2.0           4.0
+yardsToGo                         16124.0    NaN                                                     NaN    NaN             8.4613     3.908658           1.0           6.0          10.0          10.0          38.0
+possessionTeam                      16124     32                                                     IND    576                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+defensiveTeam                       16124     32                                                     ATL    574                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+yardlineSide                        15900     32                                                     WAS    591                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+yardlineNumber                    16124.0    NaN                                                     NaN    NaN          29.226185    12.662828           1.0          21.0          30.0          40.0          50.0
+gameClock                           16124    899                                                   15:00    379                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+preSnapHomeScore                  16124.0    NaN                                                     NaN    NaN           11.25583     9.468489           0.0           3.0          10.0          17.0          49.0
+preSnapVisitorScore               16124.0    NaN                                                     NaN    NaN          10.049615      9.22468           0.0           0.0           7.0          16.0          48.0
+playNullifiedByPenalty              16124      1                                                       N  16124                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+absoluteYardlineNumber            16124.0    NaN                                                     NaN    NaN          60.413483    24.326003          11.0          40.0          61.0          81.0         109.0
+preSnapHomeTeamWinProbability     16124.0    NaN                                                     NaN    NaN           0.552007     0.290603      0.001049      0.324613      0.578922      0.791601      0.999197
+preSnapVisitorTeamWinProbability  16124.0    NaN                                                     NaN    NaN           0.447993     0.290603      0.000803      0.208399      0.421078      0.675387      0.998951
+expectedPoints                    16124.0    NaN                                                     NaN    NaN           2.243456     1.648766     -2.366872      1.012328      2.010124      3.473432      6.556614
+offenseFormation                    15936      7                                                 SHOTGUN   8791                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+receiverAlignment                   15936     11                                                     2x2   6483                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+playClockAtSnap                   16123.0    NaN                                                     NaN    NaN          10.565279     6.288045           0.0           6.0          10.0          14.0          40.0
+passResult                           9736      5                                                       C   5624                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+passLength                         8726.0    NaN                                                     NaN    NaN           7.627321    10.104645         -18.0           1.0           5.0          12.0          65.0
+targetX                            8376.0    NaN                                                     NaN    NaN          60.217246    26.129341         -2.56         41.28         60.78       78.7325        123.57
+targetY                            8376.0    NaN                                                     NaN    NaN          26.925907    15.069949         -2.12         14.18        27.185       39.5125         56.71
+playAction                          16124      2                                                   False  13379                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+dropbackType                        10321      9                                             TRADITIONAL   8149                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+dropbackDistance                  10158.0    NaN                                                     NaN    NaN           3.382533     1.930439           0.0           2.1         3.155          4.33     17.969999
+passLocationType                     9312      4                                              INSIDE_BOX   8018                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+timeToThrow                        8705.0    NaN                                                     NaN    NaN           2.745727     1.003111         0.329         2.102         2.587          3.17         9.643
+timeInTackleBox                    8917.0    NaN                                                     NaN    NaN           2.632755     0.817805           0.0         2.079         2.569           3.1           7.4
+timeToSack                          608.0    NaN                                                     NaN    NaN           4.515796     1.314407         2.135       3.64375         4.249         5.139        11.912
+passTippedAtLine                     9336      2                                                   False   9109                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+unblockedPressure                    9755      2                                                   False   9051                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+qbSpike                              9336      2                                                   False   9313                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+qbKneel                           16124.0    NaN                                                     NaN    NaN           0.010233     0.100643           0.0           0.0           0.0           0.0           1.0
+qbSneak                              6788      2                                                   False   6668                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+rushLocationType                     6788      5                                            INSIDE_RIGHT   1941                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+penaltyYards                        384.0    NaN                                                     NaN    NaN           1.333333     8.785422         -20.0           0.0           0.0           5.0          15.0
+prePenaltyYardsGained             16124.0    NaN                                                     NaN    NaN           5.475254     8.622005         -18.0           0.0           3.0           8.0          98.0
+yardsGained                       16124.0    NaN                                                     NaN    NaN           5.460618     8.833095         -68.0           0.0           3.0           8.0          98.0
+homeTeamWinProbabilityAdded       16124.0    NaN                                                     NaN    NaN          -0.000065     0.041561     -0.834887     -0.012808           0.0      0.013166      0.541161
+visitorTeamWinProbilityAdded      16124.0    NaN                                                     NaN    NaN           0.000065     0.041561     -0.541161     -0.013166           0.0      0.012808      0.834887
+expectedPointsAdded               16124.0    NaN                                                     NaN    NaN          -0.029381     1.397405      -13.0236      -0.64544     -0.178783      0.696452      8.698986
+isDropback                          16124      2                                                    True   9736                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+pff_runConceptPrimary                9071     12                                            OUTSIDE ZONE   2450                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+pff_runConceptSecondary              2821     43                                                    LEAD    569                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+pff_runPassOption                 16124.0    NaN                                                     NaN    NaN            0.10134     0.301787           0.0           0.0           0.0           0.0           1.0
+pff_passCoverage                    15932     18                                                 Cover-3   4956                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+pff_manZone                         15932      3                                                    Zone  10969                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+gameId                                  0
+playId                                  0
+playDescription                         0
+quarter                                 0
+down                                    0
+yardsToGo                               0
+possessionTeam                          0
+defensiveTeam                           0
+yardlineSide                          224
+yardlineNumber                          0
+gameClock                               0
+preSnapHomeScore                        0
+preSnapVisitorScore                     0
+playNullifiedByPenalty                  0
+absoluteYardlineNumber                  0
+preSnapHomeTeamWinProbability           0
+preSnapVisitorTeamWinProbability        0
+expectedPoints                          0
+offenseFormation                      188
+receiverAlignment                     188
+playClockAtSnap                         1
+passResult                           6388
+passLength                           7398
+targetX                              7748
+targetY                              7748
+playAction                              0
+dropbackType                         5803
+dropbackDistance                     5966
+passLocationType                     6812
+timeToThrow                          7419
+timeInTackleBox                      7207
+timeToSack                          15516
+passTippedAtLine                     6788
+unblockedPressure                    6369
+qbSpike                              6788
+qbKneel                                 0
+qbSneak                              9336
+rushLocationType                     9336
+penaltyYards                        15740
+prePenaltyYardsGained                   0
+yardsGained                             0
+homeTeamWinProbabilityAdded             0
+visitorTeamWinProbilityAdded            0
+expectedPointsAdded                     0
+isDropback                              0
+pff_runConceptPrimary                7053
+pff_runConceptSecondary             13303
+pff_runPassOption                       0
+pff_passCoverage                      192
+pff_manZone                           192
+
+Players:
+Shape: (1697, 7)
+              count unique            top freq          mean          std      min      25%      50%      75%      max
+nflId        1697.0    NaN            NaN  NaN  48237.157336  5230.066814  25511.0  44830.0  47874.0  53476.0  55241.0
+height         1697     16            6-3  258           NaN          NaN      NaN      NaN      NaN      NaN      NaN
+weight       1697.0    NaN            NaN  NaN    245.774308    47.256005    153.0    205.0    236.0    291.0    380.0
+birthDate      1210    989     1995-03-21    4           NaN          NaN      NaN      NaN      NaN      NaN      NaN
+collegeName    1697    225        Alabama   59           NaN          NaN      NaN      NaN      NaN      NaN      NaN
+position       1697     19             WR  224           NaN          NaN      NaN      NaN      NaN      NaN      NaN
+displayName    1697   1687  Lamar Jackson    2           NaN          NaN      NaN      NaN      NaN      NaN      NaN
+nflId            0
+height           0
+weight           0
+birthDate      487
+collegeName      0
+position         0
+displayName      0
+
+Tracking:
+Shape: (7105, 18)
+                count unique                    top  freq               mean          std           min           25%           50%           75%           max
+gameId         7105.0    NaN                    NaN   NaN  2022091093.365095    77.973541  2022090800.0  2022091103.0  2022091106.0  2022091110.0  2022091200.0
+playId         7105.0    NaN                    NaN   NaN        2013.700211  1226.466636          55.0         957.0        1968.0        3032.0        5096.0
+nflId          6799.0    NaN                    NaN   NaN       47257.685395  5007.495167       25511.0       43435.0       46232.0       52494.0       55158.0
+displayName      7105   1053               football   306                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+frameId        7105.0    NaN                    NaN   NaN          87.887544    60.518335           1.0          42.0          80.0         126.0         684.0
+frameType        7105      3            BEFORE_SNAP  4620                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+time             7105   6966  2022-09-11 20:57:20.9     3                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+jerseyNumber   6799.0    NaN                    NaN   NaN          47.765848     30.76415           1.0          21.0          51.0          74.0          99.0
+club             7105     33               football   306                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+playDirection    7105      2                  right  3566                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+x              7105.0    NaN                    NaN   NaN          60.781714    24.609642          1.23         40.58         61.37         80.23        116.92
+y              7105.0    NaN                    NaN   NaN           26.80544     7.690596          -2.1         22.41         26.82         31.17         56.56
+s              7105.0    NaN                    NaN   NaN           1.375137     1.891272           0.0          0.06          0.56          2.01         24.68
+a              7105.0    NaN                    NaN   NaN           0.955913     1.204091           0.0          0.06          0.53          1.37         13.51
+dis            7105.0    NaN                    NaN   NaN           0.140138     0.189522           0.0          0.01          0.06           0.2          2.49
+o              6799.0    NaN                    NaN   NaN          178.07318     97.94293          0.23          88.7        174.22        268.78        359.93
+dir            6799.0    NaN                    NaN   NaN          180.44924   104.330576          0.04         90.39        180.96       270.585        359.94
+event             355     21               line_set    55                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+gameId              0
+playId              0
+nflId             306
+displayName         0
+frameId             0
+frameType           0
+time                0
+jerseyNumber      306
+club                0
+playDirection       0
+x                   0
+y                   0
+s                   0
+a                   0
+dis                 0
+o                 306
+dir               306
+event            6750
+
+Player Play:
+Shape: (3547, 50)
+                                             count unique                top  freq               mean          std           min           25%           50%           75%           max
+gameId                                      3547.0    NaN                NaN   NaN  2022098826.622498  6006.249696  2022090800.0  2022092500.0  2022100903.0  2022102306.0  2022110700.0
+playId                                      3547.0    NaN                NaN   NaN         2079.67832  1183.065322          55.0        1055.0        2125.0        3056.5        4858.0
+nflId                                       3547.0    NaN                NaN   NaN       47538.852551  5109.589225       25511.0       43478.0       46705.0       52600.0       55239.0
+teamAbbr                                      3547     32                NYJ   140                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+hadRushAttempt                              3547.0    NaN                NaN   NaN           0.012969     0.113155           0.0           0.0           0.0           0.0           1.0
+rushingYards                                3547.0    NaN                NaN   NaN           0.067945     1.121827          -2.0           0.0           0.0           0.0          51.0
+hadDropback                                 3547.0    NaN                NaN   NaN           0.019453      0.13813           0.0           0.0           0.0           0.0           1.0
+passingYards                                3547.0    NaN                NaN   NaN           0.207499     2.114015          -3.0           0.0           0.0           0.0          60.0
+sackYardsAsOffense                          3547.0    NaN                NaN   NaN          -0.011277     0.306698         -11.0           0.0           0.0           0.0           0.0
+hadPassReception                            3547.0    NaN                NaN   NaN           0.018607     0.135152           0.0           0.0           0.0           0.0           1.0
+receivingYards                              3547.0    NaN                NaN   NaN           0.193121     2.056225          -4.0           0.0           0.0           0.0          60.0
+wasTargettedReceiver                        3547.0    NaN                NaN   NaN           0.025374     0.157279           0.0           0.0           0.0           0.0           1.0
+yardageGainedAfterTheCatch                  3547.0    NaN                NaN   NaN           0.116718     1.408387          -2.0           0.0           0.0           0.0          52.0
+fumbles                                     3547.0    NaN                NaN   NaN           0.000564     0.023742           0.0           0.0           0.0           0.0           1.0
+fumbleLost                                  3547.0    NaN                NaN   NaN           0.000282     0.016791           0.0           0.0           0.0           0.0           1.0
+fumbleOutOfBounds                           3547.0    NaN                NaN   NaN                0.0          0.0           0.0           0.0           0.0           0.0           0.0
+assistedTackle                              3547.0    NaN                NaN   NaN           0.003947      0.06271           0.0           0.0           0.0           0.0           1.0
+forcedFumbleAsDefense                       3547.0    NaN                NaN   NaN           0.000282     0.016791           0.0           0.0           0.0           0.0           1.0
+halfSackYardsAsDefense                      3547.0    NaN                NaN   NaN          -0.003383     0.171223         -10.0           0.0           0.0           0.0           0.0
+passDefensed                                3547.0    NaN                NaN   NaN           0.005357     0.073003           0.0           0.0           0.0           0.0           1.0
+quarterbackHit                              3547.0    NaN                NaN   NaN           0.004793     0.069074           0.0           0.0           0.0           0.0           1.0
+sackYardsAsDefense                          3547.0    NaN                NaN   NaN          -0.016634     0.385883         -11.0           0.0           0.0           0.0           0.0
+safetyAsDefense                             3547.0    NaN                NaN   NaN                0.0          0.0           0.0           0.0           0.0           0.0           0.0
+soloTackle                                  3547.0    NaN                NaN   NaN           0.027347     0.163116           0.0           0.0           0.0           0.0           1.0
+tackleAssist                                3547.0    NaN                NaN   NaN            0.01607     0.125762           0.0           0.0           0.0           0.0           1.0
+tackleForALoss                              3547.0    NaN                NaN   NaN           0.005075     0.071066           0.0           0.0           0.0           0.0           1.0
+tackleForALossYardage                       3547.0    NaN                NaN   NaN           0.025092     0.427075           0.0           0.0           0.0           0.0          11.0
+hadInterception                             3547.0    NaN                NaN   NaN           0.001128     0.033567           0.0           0.0           0.0           0.0           1.0
+interceptionYards                           3547.0    NaN                NaN   NaN           0.010431     0.560651          -1.0           0.0           0.0           0.0          33.0
+fumbleRecoveries                            3547.0    NaN                NaN   NaN           0.000846     0.029074           0.0           0.0           0.0           0.0           1.0
+fumbleRecoveryYards                         3547.0    NaN                NaN   NaN          -0.001692     0.100744          -6.0           0.0           0.0           0.0           0.0
+penaltyYards                                3547.0    NaN                NaN   NaN            0.00141     0.083954           0.0           0.0           0.0           0.0           5.0
+penaltyNames                                     3      2  Offensive Holding     2                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+wasInitialPassRusher                        1075.0    NaN                NaN   NaN           0.388837     0.487713           0.0           0.0           0.0           1.0           1.0
+causedPressure                                3547      2              False  3505                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+timeToPressureAsPassRusher                    42.0    NaN                NaN   NaN           3.097619     1.251631           1.3         2.325           2.9           3.5           6.9
+getOffTimeAsPassRusher                       485.0    NaN                NaN   NaN           0.998047     0.271417         0.388         0.803         0.954         1.146           2.0
+inMotionAtBallSnap                            1058      2              False  1011                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+shiftSinceLineset                             1796      2              False  1766                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+motionSinceLineset                             883      2              False   819                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+wasRunningRoute                              453.0    NaN                NaN   NaN                1.0          0.0           1.0           1.0           1.0           1.0           1.0
+routeRan                                       453     12                 GO    73                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+blockedPlayerNFLId1                          470.0    NaN                NaN   NaN       46534.887234  5050.822104       33131.0       43326.0       46147.0       52415.0       55032.0
+blockedPlayerNFLId2                           31.0    NaN                NaN   NaN        48609.16129   4482.29274       42378.0       44721.5       47917.0       53448.5       55045.0
+blockedPlayerNFLId3                            0.0    NaN                NaN   NaN                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+pressureAllowedAsBlocker                     511.0    NaN                NaN   NaN           0.072407     0.259415           0.0           0.0           0.0           0.0           1.0
+timeToPressureAllowedAsBlocker                37.0    NaN                NaN   NaN           2.791892     0.951717           1.7           2.2           2.6           3.0           6.1
+pff_defensiveCoverageAssignment                670     19                MAN   157                NaN          NaN           NaN           NaN           NaN           NaN           NaN
+pff_primaryDefensiveCoverageMatchupNflId     430.0    NaN                NaN   NaN       48033.460465  4669.014687       30842.0       44856.0       46894.5       52584.0       55158.0
+pff_secondaryDefensiveCoverageMatchupNflId    27.0    NaN                NaN   NaN       48141.185185   4497.34337       38696.0       44944.0       47847.0       52522.0       54846.0
+gameId                                           0
+playId                                           0
+nflId                                            0
+teamAbbr                                         0
+hadRushAttempt                                   0
+rushingYards                                     0
+hadDropback                                      0
+passingYards                                     0
+sackYardsAsOffense                               0
+hadPassReception                                 0
+receivingYards                                   0
+wasTargettedReceiver                             0
+yardageGainedAfterTheCatch                       0
+fumbles                                          0
+fumbleLost                                       0
+fumbleOutOfBounds                                0
+assistedTackle                                   0
+forcedFumbleAsDefense                            0
+halfSackYardsAsDefense                           0
+passDefensed                                     0
+quarterbackHit                                   0
+sackYardsAsDefense                               0
+safetyAsDefense                                  0
+soloTackle                                       0
+tackleAssist                                     0
+tackleForALoss                                   0
+tackleForALossYardage                            0
+hadInterception                                  0
+interceptionYards                                0
+fumbleRecoveries                                 0
+fumbleRecoveryYards                              0
+penaltyYards                                     0
+penaltyNames                                  3544
+wasInitialPassRusher                          2472
+causedPressure                                   0
+timeToPressureAsPassRusher                    3505
+getOffTimeAsPassRusher                        3062
+inMotionAtBallSnap                            2489
+shiftSinceLineset                             1751
+motionSinceLineset                            2664
+wasRunningRoute                               3094
+routeRan                                      3094
+blockedPlayerNFLId1                           3077
+blockedPlayerNFLId2                           3516
+blockedPlayerNFLId3                           3547
+pressureAllowedAsBlocker                      3036
+timeToPressureAllowedAsBlocker                3510
+pff_defensiveCoverageAssignment               2877
+pff_primaryDefensiveCoverageMatchupNflId      3117
+pff_secondaryDefensiveCoverageMatchupNflId    3520
+
+
+--- Top Offensive Players ---
+
+Top Passers:
+     nflId  passingYards  rushingYards  receivingYards        displayName position
+62   39987           114             0               0         Geno Smith       QB
+732  52409            91             0               0         Joe Burrow       QB
+100  41265            56             0               0         Derek Carr       QB
+735  52413            39             0               0     Tua Tagovailoa       QB
+36   38538            34            -1               0     Ryan Tannehill       QB
+105  41291            31             0               0    Jimmy Garoppolo       QB
+771  52461            31            13               0        Jalen Hurts       QB
+425  46076            30            -2               0         Josh Allen       QB
+306  44814            27             0               0  Mitchell Trubisky       QB
+937  53496            26             0               0        Davis Mills       QB
+Top Rushers:
+      nflId  passingYards  rushingYards  receivingYards      displayName position
+374   44947             0            51               0  Jamaal Williams       RB
+1101  54572             0            22               0    Dameon Pierce       RB
+541   46377             0            15               0   Jeffery Wilson       RB
+331   44853             0            15               0      Dalvin Cook       RB
+579   47789             0            13               0     Daniel Jones       QB
+771   52461            31            13               0      Jalen Hurts       QB
+1063  54506             0            13               0   Kenneth Walker       RB
+236   43334             0            10               0    Derrick Henry       RB
+144   42345             0             9               0   Marcus Mariota       QB
+447   46101            12             9               0    Lamar Jackson       QB
+Top Receivers:
+     nflId  passingYards  rushingYards  receivingYards      displayName position
+605  47819             0             0              64     Deebo Samuel       WR
+278  43454             0             0              60      Tyreek Hill       WR
+892  53439             0             0              33    DeVonta Smith       WR
+492  46173             0             0              33     Nyheim Hines       RB
+755  52441             0             0              33      Tee Higgins       WR
+556  46671             0             0              32  Trent Sherfield       WR
+615  47834             0             0              31       A.J. Brown       WR
+845  52614             0             0              23      Tyler Davis       TE
+369  44930             0             0              23    Josh Reynolds       WR
+324  44841             0             0              22      David Njoku       TE
+
+--- Play Type Distribution ---
+
+Pass Plays: 9736
+Rush Plays: 6788
+Other/Unknown: -400
+
+--- Sample Merged Tracking & Player Info ---
+
