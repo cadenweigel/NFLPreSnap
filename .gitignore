@@ -1,3 +1,6 @@
+data/
+nfl-big-data-bowl-2025.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
