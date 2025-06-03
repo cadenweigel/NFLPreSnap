@@ -55,8 +55,13 @@ with open(report_file, "w") as report:
 
     def merge_tracking_and_players():
         write_and_print("\n--- Sample Merged Tracking & Player Info ---\n")
+        tracking['nflId'] = tracking['nflId'].astype('Int64')  # allow for NA-safe int conversion
         merged = tracking.merge(players[["nflId", "displayName", "position"]], on="nflId", how="left")
-        write_and_print(merged[["gameId", "playId", "displayName", "position", "x", "y", "s", "a"]].head().to_string())
+        if 'displayName' in merged.columns:
+            write_and_print(merged[["gameId", "playId", "displayName", "position", "x", "y", "s", "a"]].head().to_string())
+        else:
+            write_and_print("No matching player info found in tracking data.")
+
 
     # Run all analysis functions
     summarize_dataframes()
