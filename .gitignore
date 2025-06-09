@@ -1,4 +1,6 @@
-data/
+data/csv
+data/batches
+data/npy
 nfl-big-data-bowl-2025.zip
 
 # Byte-compiled / optimized / DLL files
