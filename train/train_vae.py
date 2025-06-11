@@ -1,4 +1,4 @@
-# train/train_vae.py
+# --- train/train_vae.py ---
 
 import sys
 import os
@@ -7,67 +7,65 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import DataLoader
+from torch.nn.utils.rnn import pad_sequence
 import numpy as np
 from models.vae import TrajectoryVAE
 
 # --- Configuration Constants ---
 
-SEQ_LEN = 50                        # Number of frames per play
-PLAYER_FEATURES = 6                # ['x', 'y', 's', 'a', 'dir', 'o']
-ROLE_FILTERS = ["offense", "defense"]  # Include both offense and defense players
-PLAYER_COUNT = 22                  # 11 offense + 11 defense
-INPUT_DIM = PLAYER_COUNT * PLAYER_FEATURES  # 132
+PLAYER_FEATURES = 6
+ROLE_FILTERS = ["offense", "defense"]
+PLAYER_COUNT = 22
+INPUT_DIM = PLAYER_COUNT * PLAYER_FEATURES
 HIDDEN_DIM = 128
 LATENT_DIM = 64
 BATCH_SIZE = 64
 EPOCHS = 50
 LR = 1e-3
-PATIENCE = 10                       # Early stopping patience
+PATIENCE = 10
 MODEL_PATH = "models/trajectory_vae.pt"
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-
 # --- Data Loading Function ---
 
-def load_npy_dict_conditioned(path, seq_len=SEQ_LEN, role_filters=ROLE_FILTERS):
+def load_variable_length_plays(path, role_filters=ROLE_FILTERS):
     """
-    Load .npy dictionary of trajectory data and outcomes.
-    Filters for plays with exactly 22 known-role players (offense + defense),
-    and returns fixed-length, flattened trajectory tensors + outcome labels.
+    Loads a dataset of variable-length trajectory sequences with player features.
+    Filters out plays that don't have exactly 22 players with valid roles.
+    Returns a list of (sequence_tensor, outcome) tuples.
     """
     data_dict = np.load(path, allow_pickle=True).item()
     sequences, outcomes = [], []
 
     for item in data_dict.values():
-        traj = item["trajectory"]  # (T, 22, 6)
-        roles = item["roles"]      # list of 22 role strings
-        outcome = item["outcome"]  # yards gained (float)
+        traj = item["trajectory"]
+        roles = item["roles"]
+        outcome = item["outcome"]
 
-        # Filter players by role
         mask = [i for i, r in enumerate(roles) if r in role_filters]
         if len(mask) != PLAYER_COUNT:
-            continue  # skip incomplete plays
+            continue
 
         traj = traj[:, mask, :]  # (T, 22, 6)
+        flattened = traj.reshape(traj.shape[0], -1)  # (T, 132)
 
-        # Truncate or zero-pad to SEQ_LEN
-        if traj.shape[0] >= seq_len:
-            clipped = traj[:seq_len]
-        else:
-            pad = np.zeros((seq_len - traj.shape[0], PLAYER_COUNT, PLAYER_FEATURES))
-            clipped = np.concatenate([traj, pad], axis=0)
+        sequences.append(torch.tensor(flattened, dtype=torch.float32))
+        outcomes.append(torch.tensor(outcome, dtype=torch.float32))
 
-        # Flatten player data for each frame
-        sequences.append(clipped.reshape(seq_len, -1))  # (SEQ_LEN, 132)
-        outcomes.append(outcome)
+    return list(zip(sequences, outcomes))
 
-    # Convert to PyTorch tensors
-    x = torch.tensor(np.stack(sequences), dtype=torch.float32)
-    y = torch.tensor(outcomes, dtype=torch.float32)
-    return TensorDataset(x, y)
-
+def collate_fn(batch):
+    """
+    Pads a batch of variable-length sequences for batching.
+    Returns padded sequences, outcome labels, and original lengths.
+    """
+    x_list, y_list = zip(*batch)
+    x_padded = pad_sequence(x_list, batch_first=True)  # (B, T_max, 132)
+    y_tensor = torch.stack(y_list)  # (B,)
+    lengths = torch.tensor([seq.size(0) for seq in x_list])  # (B,)
+    return x_padded, y_tensor, lengths
 
 # --- Training and Evaluation ---
 
@@ -75,14 +73,15 @@ def train(model, dataloader, optimizer, epoch):
     model.train()
     total_loss, recon_total, kl_total = 0, 0, 0
 
-    for x, y in dataloader:
-        x, y = x.to(DEVICE), y.to(DEVICE)
+    for x, y, lengths in dataloader:
+        x, y, lengths = x.to(DEVICE), y.to(DEVICE), lengths.to(DEVICE)
         optimizer.zero_grad()
 
-        # Forward pass with outcome conditioning
-        recon_x, mu, logvar = model(x, outcome=y)
-        loss, recon_loss, kl_div = model.loss_function(recon_x, x, mu, logvar)
+        # Forward pass with outcome conditioning and sequence lengths
+        recon_x, mu, logvar = model(x, outcome=y, lengths=lengths)
 
+        # Compute VAE loss
+        loss, recon_loss, kl_div = model.loss_function(recon_x, x, mu, logvar)
         loss.backward()
         optimizer.step()
 
@@ -92,17 +91,19 @@ def train(model, dataloader, optimizer, epoch):
 
     print(f"[Epoch {epoch}][Train] Total: {total_loss:.4f} | Recon: {recon_total:.4f} | KL: {kl_total:.4f}")
 
-
 @torch.no_grad()
 def evaluate(model, dataloader):
     model.eval()
     total_loss, recon_total, kl_total = 0, 0, 0
 
-    for x, y in dataloader:
-        x, y = x.to(DEVICE), y.to(DEVICE)
-        recon_x, mu, logvar = model(x, outcome=y)
-        loss, recon_loss, kl_div = model.loss_function(recon_x, x, mu, logvar)
+    for x, y, lengths in dataloader:
+        x, y, lengths = x.to(DEVICE), y.to(DEVICE), lengths.to(DEVICE)
 
+        # Forward pass with outcome conditioning and sequence lengths
+        recon_x, mu, logvar = model(x, outcome=y, lengths=lengths)
+
+        # Compute VAE loss
+        loss, recon_loss, kl_div = model.loss_function(recon_x, x, mu, logvar)
         total_loss += loss.item()
         recon_total += recon_loss.item()
         kl_total += kl_div.item()
@@ -111,31 +112,31 @@ def evaluate(model, dataloader):
     print(f"[Validation] Total: {total_loss:.4f} | Recon: {recon_total:.4f} | KL: {kl_total:.4f}")
     return avg_loss
 
-
 # --- Main Entrypoint ---
 
 def main():
-    # Load datasets
-    train_data = load_npy_dict_conditioned("data/npy/full_play_data_train.npy")
-    val_data = load_npy_dict_conditioned("data/npy/full_play_data_val.npy")
-    train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
-    val_loader = DataLoader(val_data, batch_size=BATCH_SIZE)
+    # Load training and validation datasets
+    train_data = load_variable_length_plays("data/npy/full_play_data_train.npy")
+    val_data = load_variable_length_plays("data/npy/full_play_data_val.npy")
 
-    # Initialize model and optimizer
+    # Use custom collate_fn to pad sequences
+    train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, collate_fn=collate_fn)
+    val_loader = DataLoader(val_data, batch_size=BATCH_SIZE, collate_fn=collate_fn)
+
+    # Initialize VAE model and optimizer
     model = TrajectoryVAE(input_dim=INPUT_DIM, hidden_dim=HIDDEN_DIM, latent_dim=LATENT_DIM).to(DEVICE)
     optimizer = optim.Adam(model.parameters(), lr=LR)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min", patience=2, factor=0.5, verbose=True)
 
-    # Early stopping and tracking best model
     best_val_loss = float("inf")
     epochs_without_improvement = 0
 
+    # Training loop with early stopping
     for epoch in range(1, EPOCHS + 1):
         train(model, train_loader, optimizer, epoch)
         val_loss = evaluate(model, val_loader)
         scheduler.step(val_loss)
 
-        # Early stopping check
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             epochs_without_improvement = 0

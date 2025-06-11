@@ -1,90 +1,107 @@
+# --- models/vae.py ---
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
 class TrajectoryVAE(nn.Module):
     def __init__(self, input_dim, hidden_dim=128, latent_dim=64):
-        """
-        Conditional Variational Autoencoder for trajectory sequences.
-
-        Args:
-            input_dim (int): Flattened input feature size per time step (e.g., 132 for 22 players × 6 features).
-            hidden_dim (int): Hidden size of encoder/decoder LSTMs.
-            latent_dim (int): Dimension of latent representation.
-        """
         super().__init__()
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
         self.latent_dim = latent_dim
 
-        # Encoder LSTM: processes input sequence into hidden state
+        # Encoder LSTM for encoding trajectory sequences
         self.encoder = nn.LSTM(input_dim, hidden_dim, batch_first=True)
 
-        # Latent space transformations
+        # Fully connected layers to derive mean and log-variance for latent space
         self.fc_mu = nn.Linear(hidden_dim, latent_dim)
         self.fc_logvar = nn.Linear(hidden_dim, latent_dim)
 
-        # If using conditioning (e.g., yards gained), apply before latent-to-hidden
+        # Optional conditioning on play outcome (e.g., yards gained)
         self.condition_to_latent = nn.Linear(latent_dim + 1, latent_dim)
 
-        # Map latent vector to decoder's initial hidden state
+        # Map latent vector to decoder's hidden state
         self.latent_to_hidden = nn.Linear(latent_dim, hidden_dim)
 
-        # Decoder LSTM now outputs hidden_dim, not input_dim
+        # Decoder LSTM for reconstructing the trajectory sequence
         self.decoder = nn.LSTM(hidden_dim, hidden_dim, batch_first=True)
 
-        # Final projection to reconstruct original input dimension
+        # Final projection to original input dimensions
         self.output_projection = nn.Linear(hidden_dim, input_dim)
 
-    def encode(self, x):
-        """Encodes the input into latent mean and log-variance."""
-        _, (h_n, _) = self.encoder(x)  # h_n shape: (1, batch, hidden_dim)
-        h_n = h_n.squeeze(0)
+    def encode(self, x, lengths):
+        """
+        Encode padded input sequence using LSTM. Uses pack_padded_sequence
+        so the encoder ignores padding during computation.
+        Args:
+            x: Padded input tensor (batch, seq_len, input_dim)
+            lengths: Actual lengths of each sequence in the batch (batch,)
+        Returns:
+            mu, logvar: Mean and log-variance vectors for the latent distribution
+        """
+        packed = pack_padded_sequence(x, lengths.cpu(), batch_first=True, enforce_sorted=False)
+        _, (h_n, _) = self.encoder(packed)  # Use final hidden state
+        h_n = h_n.squeeze(0)  # Remove LSTM layer dimension
         mu = self.fc_mu(h_n)
         logvar = self.fc_logvar(h_n)
         return mu, logvar
 
     def reparameterize(self, mu, logvar):
-        """Samples from N(mu, sigma^2) using the reparameterization trick."""
+        """
+        Reparameterization trick to sample from N(mu, sigma^2)
+        """
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
         return mu + eps * std
 
     def decode(self, z, seq_len, outcome=None):
         """
-        Decodes the latent code into a trajectory sequence, optionally conditioned on outcome.
-
+        Decode latent vector into trajectory sequence.
         Args:
-            z: latent vector (batch, latent_dim)
-            seq_len: number of time steps to decode
-            outcome: optional scalar conditioning input (batch,)
+            z: Latent vector (batch, latent_dim)
+            seq_len: Number of time steps to decode
+            outcome: Optional outcome for conditioning (batch,)
+        Returns:
+            Reconstructed sequence (batch, seq_len, input_dim)
         """
         if outcome is not None:
-            outcome = outcome.unsqueeze(1)  # shape: (batch, 1)
-            z = torch.cat([z, outcome], dim=1)  # shape: (batch, latent + 1)
-            z = self.condition_to_latent(z)  # back to latent_dim
+            outcome = outcome.unsqueeze(1)
+            z = torch.cat([z, outcome], dim=1)
+            z = self.condition_to_latent(z)
 
-        # Initialize decoder hidden and cell states
-        h_dec = self.latent_to_hidden(z).unsqueeze(0)  # shape: (1, batch, hidden_dim)
-        c_dec = torch.zeros_like(h_dec)
+        h_dec = self.latent_to_hidden(z).unsqueeze(0)  # Initial hidden state
+        c_dec = torch.zeros_like(h_dec)  # Initial cell state
 
-        # Start decoding with zero input
+        # Zero-input decoder, LSTM generates from hidden state only
         dec_input = torch.zeros((z.size(0), seq_len, self.hidden_dim), device=z.device)
-        output, _ = self.decoder(dec_input, (h_dec, c_dec))  # (batch, seq_len, hidden_dim)
+        output, _ = self.decoder(dec_input, (h_dec, c_dec))
 
-        # Project output back to original input dimension
-        output = self.output_projection(output)  # (batch, seq_len, input_dim)
+        # Project to original input space
+        output = self.output_projection(output)
         return output
 
-    def forward(self, x, outcome=None):
-        """Full VAE forward pass."""
-        mu, logvar = self.encode(x)
+    def forward(self, x, outcome=None, lengths=None):
+        """
+        Full VAE forward pass.
+        Args:
+            x: Input sequence (batch, seq_len, input_dim)
+            outcome: Optional scalar outcome (batch,)
+            lengths: Sequence lengths before padding (batch,)
+        Returns:
+            recon_x: Reconstructed sequence
+            mu, logvar: Latent distribution parameters
+        """
+        mu, logvar = self.encode(x, lengths)
         z = self.reparameterize(mu, logvar)
         recon_x = self.decode(z, x.size(1), outcome=outcome)
         return recon_x, mu, logvar
 
     def loss_function(self, recon_x, x, mu, logvar):
-        """VAE loss: MSE reconstruction loss + KL divergence."""
+        """
+        VAE loss combines MSE reconstruction loss and KL divergence.
+        """
         recon_loss = F.mse_loss(recon_x, x, reduction='mean')
         kl_div = -0.5 * torch.mean(1 + logvar - mu.pow(2) - logvar.exp())
         return recon_loss + kl_div, recon_loss, kl_div
