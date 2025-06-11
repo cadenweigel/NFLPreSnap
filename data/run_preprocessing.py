@@ -15,7 +15,7 @@ def compute_stats(play_data):
         play_data (dict): Dictionary of (gameId, playId) -> play data
     """
     frame_lengths = [v['trajectory'].shape[0] for v in play_data.values()]
-    print(f"📊 Frame count stats:")
+    print(f"Frame count stats:")
     print(f"   Min:    {min(frame_lengths)}")
     print(f"   Max:    {max(frame_lengths)}")
     print(f"   Avg:    {sum(frame_lengths) / len(frame_lengths):.2f}")
@@ -83,26 +83,26 @@ def main(overwrite=False, train_ratio=0.8, val_ratio=0.1, seed=42):
     """
     # If data already exists and not forced to overwrite, skip
     if os.path.exists(SAVE_PATH) and not overwrite:
-        print(f"✅ {SAVE_PATH} already exists. Use --overwrite to regenerate.")
+        print(f"{SAVE_PATH} already exists. Use --overwrite to regenerate.")
         return
 
     # Load raw CSVs
-    print("📦 Loading raw CSVs...")
+    print("Loading raw CSVs...")
     tracking, plays, players, games = load_data()
 
     # Extract all plays and normalize them
-    print("⚙️  Extracting all frames (pre + post snap)...")
+    print("Extracting all frames (pre + post snap)...")
     start_time = time.time()
     play_data = extract_all_frames(tracking, plays)
     duration = time.time() - start_time
-    print(f"✅ Extracted {len(play_data)} plays in {duration:.2f} seconds.")
+    print(f"Extracted {len(play_data)} plays in {duration:.2f} seconds.")
 
     # Print stats about play lengths
     compute_stats(play_data)
 
     # Save full processed dataset
     np.save(SAVE_PATH, play_data)
-    print(f"💾 Saved full play data to: {SAVE_PATH}")
+    print(f"Saved full play data to: {SAVE_PATH}")
 
     # Split into train/val/test
     train, val, test = split_dict(play_data, train_ratio, val_ratio, seed)

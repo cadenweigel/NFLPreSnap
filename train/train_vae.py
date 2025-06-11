@@ -141,14 +141,14 @@ def main():
             best_val_loss = val_loss
             epochs_without_improvement = 0
             torch.save(model.state_dict(), MODEL_PATH)
-            print(f"✅ Best model saved to {MODEL_PATH}")
+            print(f"Best model saved to {MODEL_PATH}")
         else:
             epochs_without_improvement += 1
             if epochs_without_improvement >= PATIENCE:
-                print(f"⏹️ Early stopping triggered after {PATIENCE} epochs without improvement.")
+                print(f"Early stopping triggered after {PATIENCE} epochs without improvement.")
                 break
 
-    print("🏁 Training complete.")
+    print("Training complete.")
 
 if __name__ == "__main__":
     main()

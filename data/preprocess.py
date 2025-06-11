@@ -101,7 +101,7 @@ def extract_all_frames(tracking, plays):
                         return 'unknown'
                 players_frame['role'] = players_frame['club'].apply(get_role)
             else:
-                print(f"⚠️ Missing 'club' or 'jerseyNumber' in frame (gameId={gameId}, playId={playId}), skipping.")
+                print(f"Missing 'club' or 'jerseyNumber' in frame (gameId={gameId}, playId={playId}), skipping.")
                 valid = False
                 break
 
@@ -140,15 +140,15 @@ def extract_all_frames(tracking, plays):
     if play_data:
         batch_file = f"data/batches/batch_{batch_index:03}.npy"
         np.save(batch_file, play_data)
-        print(f"💾 Saved final batch: {batch_file} ({len(play_data)} plays)")
+        print(f"Saved final batch: {batch_file} ({len(play_data)} plays)")
 
     return None
 
 if __name__ == "__main__":
-    print("📦 Loading raw CSV data...")
+    print("Loading raw CSV data...")
     tracking, plays, players, games = load_data()
 
-    print("⚙️  Extracting full-length trajectories (batched)...")
+    print("Extracting full-length trajectories (batched)...")
     extract_all_frames(tracking, plays)
 
-    print("✅ Done.")
+    print("Done.")

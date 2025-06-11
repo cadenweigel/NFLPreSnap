@@ -75,13 +75,13 @@ def plot_error_distribution(df):
 
 def main():
     df = load_predictions(CSV_PATH)
-    print(f"✅ Loaded {len(df)} predictions")
+    print(f"Loaded {len(df)} predictions")
 
     plot_histograms(df)
     plot_scatter(df)
     plot_error_distribution(df)
 
-    print(f"📊 Plots saved to {OUT_DIR}")
+    print(f"Plots saved to {OUT_DIR}")
 
 if __name__ == "__main__":
     main()

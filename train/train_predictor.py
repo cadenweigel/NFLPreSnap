@@ -102,7 +102,7 @@ def evaluate(model, dataloader):
 # --- Entrypoint ---
 
 def main():
-    print("📦 Loading data...")
+    print("Loading data...")
     train_ds = load_dataset(TRAIN_PATH)
     val_ds = load_dataset(VAL_PATH)
 
@@ -122,7 +122,7 @@ def main():
     best_val_loss = float("inf")
     no_improvement = 0
 
-    print("🚀 Beginning training...")
+    print("Beginning training...")
     for epoch in range(1, EPOCHS + 1):
         train(model, train_loader, optimizer, epoch)
         val_loss = evaluate(model, val_loader)
@@ -132,11 +132,11 @@ def main():
             best_val_loss = val_loss
             no_improvement = 0
             torch.save(model.state_dict(), MODEL_PATH)
-            print(f"✅ Best model saved to {MODEL_PATH}")
+            print(f"Best model saved to {MODEL_PATH}")
         else:
             no_improvement += 1
             if no_improvement >= PATIENCE:
-                print(f"⏹️ Early stopping after {PATIENCE} epochs without improvement.")
+                print(f"Early stopping after {PATIENCE} epochs without improvement.")
                 break
 
     print("🏁 Training complete.")

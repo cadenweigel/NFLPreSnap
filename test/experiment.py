@@ -157,7 +157,7 @@ def save_to_csv(real_preds, real_true, syn_preds, syn_true):
             writer.writerow(["Real", y, y_hat])
         for y, y_hat in zip(syn_true, syn_preds):
             writer.writerow(["Synthetic", y, y_hat])
-    print(f"📁 Saved predictions to {CSV_PATH}")
+    print(f"Saved predictions to {CSV_PATH}")
 
 # --- Run full experiment ---
 def run_experiment():
@@ -167,24 +167,24 @@ def run_experiment():
     # Pad and evaluate real
     padded_real = pad_sequence(real_plays, batch_first=True).to(DEVICE)
     real_lengths = torch.tensor(lengths)
-    print("🔍 Evaluating on real plays...")
+    print("Evaluating on real plays...")
     real_preds, real_true, _ = evaluate_predictions(predictor, padded_real, real_lengths, real_outcomes, title="Real")
 
     # Generate and evaluate synthetic
-    print("🎭 Generating and evaluating synthetic plays...")
+    print("Generating and evaluating synthetic plays...")
     synthetic = generate_plays(vae, real_outcomes, lengths)
     syn_preds, syn_true, _ = evaluate_predictions(predictor, synthetic, real_lengths, real_outcomes, title="Synthetic")
 
      # Compute ADE/FDE
-    print("📏 Computing ADE/FDE for synthetic plays...")
+    print("Computing ADE/FDE for synthetic plays...")
     ade, fde = compute_ade_fde(padded_real.cpu(), synthetic, real_lengths)
-    print(f"📊 ADE: {ade:.3f} | FDE: {fde:.3f}")
+    print(f"ADE: {ade:.3f} | FDE: {fde:.3f}")
 
     # Save predictions
     save_to_csv(real_preds, real_true, syn_preds, syn_true)
 
     # Visualize plays
-    print(f"🖼️ Saving {NUM_VISUALS} sample play visualizations...")
+    print(f"Saving {NUM_VISUALS} sample play visualizations...")
     for i in range(NUM_VISUALS):
         visualize_trajectory(real_plays[i], f"real_{i}")
         visualize_trajectory(synthetic[i], f"synthetic_{i}")

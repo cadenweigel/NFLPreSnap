@@ -10,10 +10,10 @@ def load_all_batches(batch_dir):
     for filename in sorted(os.listdir(batch_dir)):
         if filename.endswith(".npy"):
             batch_path = os.path.join(batch_dir, filename)
-            print(f"📂 Loading {batch_path}")
+            print(f"Loading {batch_path}")
             batch_data = np.load(batch_path, allow_pickle=True).item()
             all_data.update(batch_data)
-    print(f"✅ Loaded {len(all_data)} total plays.")
+    print(f"Loaded {len(all_data)} total plays.")
     return all_data
 
 def split_dict(data, train_ratio=0.8, val_ratio=0.1, seed=42):
@@ -39,7 +39,7 @@ def save_splits(base_path, train, val, test):
     np.save(f"{base_path}_train.npy", train)
     np.save(f"{base_path}_val.npy", val)
     np.save(f"{base_path}_test.npy", test)
-    print(f"💾 Saved splits:")
+    print(f"Saved splits:")
     print(f"    {base_path}_train.npy")
     print(f"    {base_path}_val.npy")
     print(f"    {base_path}_test.npy")

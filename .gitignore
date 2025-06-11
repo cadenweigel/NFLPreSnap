@@ -5,6 +5,7 @@ test/visualizations
 test/prediction_plots
 test/predictions.csv
 pics/
+test/results.txt
 nfl-big-data-bowl-2025.zip
 
 # Byte-compiled / optimized / DLL files
